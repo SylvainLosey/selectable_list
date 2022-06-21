@@ -10,21 +10,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: Scaffold(
+          appBar: AppBar(title: const Text("Selectable list example")),
+          body: const Padding(
+            padding: EdgeInsets.all(24),
+            child: SelectableListExample(),
+          )),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
+class SelectableListExample extends StatefulWidget {
+  const SelectableListExample({super.key});
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SelectableListExample> createState() => _SelectableListExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SelectableListExampleState extends State<SelectableListExample> {
   final persons = [
     Person("Ella", 3),
     Person("James", 25),
@@ -35,24 +39,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Selectable list example")),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: SelectableList<Person, String?>(
-          items: persons,
-          itemBuilder: (context, person, selected, onTap) => ListTile(
-              title: Text(person.name),
-              subtitle: Text('${person.age.toString()} years old'),
-              selected: selected,
-              onTap: onTap),
-          valueSelector: (person) => person.name,
-          selectedValue: selectedName,
-          onItemSelected: (person) =>
-              setState(() => selectedName = person.name),
-          onItemDeselected: (person) => setState(() => selectedName = null),
-        ),
-      ),
+    return SelectableList<Person, String?>(
+      items: persons,
+      itemBuilder: (context, person, selected, onTap) => ListTile(
+          title: Text(person.name),
+          subtitle: Text('${person.age.toString()} years old'),
+          selected: selected,
+          onTap: onTap),
+      valueSelector: (person) => person.name,
+      selectedValue: selectedName,
+      onItemSelected: (person) => setState(() => selectedName = person.name),
+      onItemDeselected: (person) => setState(() => selectedName = null),
     );
   }
 }

@@ -11,9 +11,16 @@ import 'package:flutter/widgets.dart';
 /// Should be typed with first (E) the type of [items], second (V) the type
 /// of [selectedValue]
 ///
-/// Base on [AnimatedList]
+/// Based on [AnimatedList]
 class SelectableList<E, V> extends StatefulWidget {
-  /// The items to display
+  /// The items must be comparable (two different instance with the same value
+  /// must return true). Either:
+  ///
+  /// 1. Override the == operator and hashCode. This can be done easily with
+  /// packages such as Equatable: https://pub.dev/packages/equatable
+  ///
+  /// 2. Use const instances of the items (mark the name field as final, add
+  /// const to the constructor definition and the calls to it)
   final List<E> items;
 
   /// The builder converting one item to a [Widget] representing it. The builder
@@ -201,7 +208,17 @@ class _ListModel<E> {
 
   E operator [](int index) => _items[index];
 
-  int indexOf(E item) => _items.indexOf(item);
+  int indexOf(E item) {
+    final index = _items.indexOf(item);
+    if (index < 0) {
+      throw Exception(
+          """The items of SelectableList are not comparable. You can:
+      1. Override the == operator and hashCode. This can be done easily with packages such as Equatable: https://pub.dev/packages/equatable
+      2. Use const instances of the items (mark the name field as final, add const to the constructor definition and the calls to it)
+    """);
+    }
+    return index;
+  }
 
   bool contains(E item) => _items.contains(item);
 }

@@ -1,6 +1,6 @@
 name: selectable_list
 description: A widget displaying a selectable list of items.
-version: 0.0.1
+version: 0.1.0
 repository: https://github.com/SylvainLosey/selectable_list
 
 environment:
