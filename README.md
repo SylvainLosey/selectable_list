@@ -11,8 +11,8 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-# Seletable List
-** A widget displaying a list of selectable items **
+# Selectable List
+**A widget displaying a list of selectable items**
 
 When one of the items is selected, the other elements of the list are animated out, leaving the selected value. 
 When tapping on the value again, the other values are animated back into the list.

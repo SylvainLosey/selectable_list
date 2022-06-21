@@ -35,10 +35,6 @@ class SelectableList<E, V> extends StatefulWidget {
   /// another state management solution
   final V selectedValue;
 
-  /// A function responsible for converting the item into the [selectedValue].
-  /// If they are the same, the function can simply return the received item
-  final V Function(E item) valueSelector;
-
   /// Callback invoked when an item is selected, should be used to set the state
   /// of the [selectedValue]
   final void Function(E item) onItemSelected;
@@ -47,16 +43,20 @@ class SelectableList<E, V> extends StatefulWidget {
   /// state of [selectedValue] to null
   final void Function(E item) onItemDeselected;
 
+  /// A function that can convert the item into the [selectedValue].
+  /// Useful when items are a class and [selectedValue] is a field of that class
+  final V Function(E item)? valueSelector;
+
   final Duration? animationDuration;
 
   const SelectableList(
       {super.key,
       required this.items,
       required this.itemBuilder,
-      required this.valueSelector,
       required this.selectedValue,
       required this.onItemSelected,
       required this.onItemDeselected,
+      this.valueSelector,
       this.animationDuration});
 
   @override
@@ -87,7 +87,7 @@ class _SelectableListState<E, V> extends State<SelectableList<E, V>> {
             ? widget.items
             : [
                 widget.items.firstWhere(
-                    (e) => widget.valueSelector(e) == widget.selectedValue)
+                    (e) => _valueSelector(e) == widget.selectedValue)
               ],
         removedItemBuilder: _buildRemovedItem,
         animationDuration: widget.animationDuration);
@@ -96,17 +96,16 @@ class _SelectableListState<E, V> extends State<SelectableList<E, V>> {
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
     final currentItem = _displayedItems[index];
-    final selected = widget.selectedValue == widget.valueSelector(currentItem);
+    final selected = widget.selectedValue == _valueSelector(currentItem);
 
     return _SelectableItem(
         animation: animation,
         child: widget.itemBuilder(context, currentItem, selected, () {
-          if (widget.selectedValue != widget.valueSelector(currentItem)) {
+          if (widget.selectedValue != _valueSelector(currentItem)) {
             widget.onItemSelected(currentItem);
 
             for (var elem in widget.items) {
-              if (widget.valueSelector(elem) !=
-                  widget.valueSelector(currentItem)) {
+              if (_valueSelector(elem) != _valueSelector(currentItem)) {
                 _remove(elem);
               }
             }
@@ -124,7 +123,7 @@ class _SelectableListState<E, V> extends State<SelectableList<E, V>> {
 
   Widget _buildRemovedItem(
       E item, BuildContext context, Animation<double> animation) {
-    final selected = widget.selectedValue == widget.valueSelector(item);
+    final selected = widget.selectedValue == _valueSelector(item);
 
     return _SelectableItem(
       animation: animation,
@@ -138,6 +137,11 @@ class _SelectableListState<E, V> extends State<SelectableList<E, V>> {
 
   void _remove(item) {
     _displayedItems.removeAt(_displayedItems.indexOf(item));
+  }
+
+  V _valueSelector(E item) {
+    if (widget.valueSelector != null) return widget.valueSelector!(item);
+    return item as V;
   }
 }
 
