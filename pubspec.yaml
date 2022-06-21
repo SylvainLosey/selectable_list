@@ -1,5 +1,9 @@
 name: selectable_list
-description: A widget displaying a list of selectable items.
+description: >
+  A widget displaying a list of selectable items.
+
+  When one of the items is selected, the other elements 
+  of the list are animated out, leaving the selected value. 
 version: 0.1.0
 repository: https://github.com/SylvainLosey/selectable_list
 

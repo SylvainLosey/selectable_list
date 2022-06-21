@@ -11,18 +11,20 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-A widget displaying a list of selectable items. When one of the items is selected, 
-the other elements of the list are animated out, leaving the selected value. 
+# Seletable List
+** A widget displaying a list of selectable items **
+
+When one of the items is selected, the other elements of the list are animated out, leaving the selected value. 
 When tapping on the value again, the other values are animated back into the list.
 
-![Example app](https://s8.gifyu.com/images/ezgif.com-gif-maker46941615186e1f54.gif)
+![Example app](https://s8.gifyu.com/images/example_appc95c65b393f83da1.gif)
 
 ## Features
 
 - Use this package when you want to allow the user to choose one element in a list, 
-and only show this element when selected. This is useful in forms for example.
+and only show this element when selected. 
 
-- Based on the AnimatedList widget
+- Based on the Flutter AnimatedList widget
 
 ## Usage
 
@@ -32,7 +34,7 @@ Import the package
 import 'package:selectable_list/selectable_list.dart';
 ```
 
-Example 
+Use the widget 
 
 ```dart
 class _ScrollableListExampleState extends State<_ScrollableListExample> {
@@ -63,3 +65,11 @@ class _ScrollableListExampleState extends State<_ScrollableListExample> {
 }
 
 ```
+
+## Examples of use
+
+### Forms
+
+Useful to make forms cleaner and more compact on mobile
+
+![Example in a form](https://s8.gifyu.com/images/app_in_use.gif)
